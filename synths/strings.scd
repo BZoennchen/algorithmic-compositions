@@ -5,8 +5,7 @@ FreqScope.new;
 
 (
 SynthDef("strings",{
-	arg freq=300, amp=0.1, atk=1, dec=0.2, sus=1, rel=0.5, gate=1.0,
-	detune=0.01, out=0;
+	arg freq=300, amp=0.1, atk=1, dec=0.2, sus=1, rel=0.5, detune=0.01, out=0;
 	var sig, fund, voices, env, envLPF, unison, detunes;
 	// number of voices
 	unison = 2;
