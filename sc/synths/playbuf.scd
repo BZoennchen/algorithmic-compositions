@@ -16,6 +16,8 @@ SynthDef(\playBuff, {
 }).add;
 )
 
+/*
+
 (
 var env, buff;
 env = Env.rand(5,1,true).asSignal(1024);
@@ -24,3 +26,5 @@ env = Env.rand(5,1,true).asSignal(1024);
 )
 
 Synth(\playBuff, [\buf, ~buff, \atk, 3, \sus, 0, \rel, 6, \amp, 0.06]);
+
+*/

@@ -1,8 +1,4 @@
 // beautiful smooth strings
-s.reboot;
-s.scope;
-FreqScope.new;
-
 (
 SynthDef("strings",{
 	arg freq=300, amp=0.1, atk=1, dec=0.2, sus=1, rel=0.5, detune=0.01, out=0;
@@ -35,6 +31,8 @@ SynthDef("strings",{
 }).add;
 )
 
+/*
+
 Synth("strings")
 
 (
@@ -46,6 +44,8 @@ Pbindef(\string_pattern,
 	\dec, Pexprand(0.1, 0.2, inf)
 ).play(quant: 4);
 )
+
+*/
 
 
 

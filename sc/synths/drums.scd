@@ -7,5 +7,3 @@ SynthDef(\drum1,{
 	Out.ar(out, sig);
 }).add
 )
-
-Synth("drum1")

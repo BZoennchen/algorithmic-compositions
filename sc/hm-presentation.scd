@@ -5,11 +5,15 @@ Utils.initTools;
 4 + 5;
 Array.series(10, 0, 1);
 
+Utils.initTools();
+
 // 2. Variables and Scope
 
 // 2.1 Global pre-initalized variable and 'normal' variables
+(
 x = 10;
 x;
+)
 
 variable = 10;
 
@@ -19,6 +23,13 @@ var variable = 10;
 
 x = 10;
 (
+x = x + 3;
+x;
+)
+
+x = 10;
+(
+var x = 0;
 x = x + 3;
 x;
 )
@@ -37,6 +48,8 @@ variable;
 )
 
 // 2.3 Global variables
+
+3 + 5 * 3
 
 ~variable = 10;
 (
@@ -65,11 +78,12 @@ add.value(6,11)
 // shortcut
 (
 var add = {
-	|a, b|
+	|a = 5, b|
 	a + b;
 };
-add.value(6,11)
+add.value(b: 11)
 )
+
 
 
 // 5. Our first sound
@@ -88,7 +102,8 @@ add.value(6,11)
 // 5.3 Explore some sounds
 
 // Supercollider does not multiply before adding, you have to use brackets to enforce priority.
-{arg freq1=200, freq2=200; 0.2 * SinOsc.ar(freq1) + 0.2 * SinOsc.ar(freq2)}.plot();
+~twosines = {arg freq1=200, freq2=200; 0.2 * SinOsc.ar(freq1) + 0.2 * SinOsc.ar(freq2)};
+~twosines.plot();
 
 {arg freq1=200, freq2=200; (0.2 * SinOsc.ar(freq1)) + (0.2 * SinOsc.ar(freq2))}.plot();
 
@@ -97,6 +112,10 @@ add.value(6,11)
 ~sineplay = {arg freq1=200, freq2=205; (0.3 * SinOsc.ar(freq1)) + (0.3 * SinOsc.ar(freq:freq2))}.play()
 
 ~sineplay.set(\freq2, 201)
+
+{arg freq1=200, freq2=200; (0.2 * SinOsc.ar(freq1)) + (0.2 * SinOsc.ar(freq:freq2,phase:pi))}.plot()
+
+{arg freq1=200, freq2=200; (0.2 * SinOsc.ar(freq:freq2,phase:pi))}.plot()
 
 // 5.4 Define a Synth
 (
@@ -108,6 +127,9 @@ SynthDef.new(\sinewaves, {
 	Out.ar(out, sig!2);
 }).add();
 )
+
+rrand(0,10)!3
+{rrand(0,10)}!3
 
 // 5.5 Use a defined Synth
 
@@ -124,7 +146,7 @@ SynthDef.new(\sinewaves, {
 	arg freq1=200, freq2=205, amp = 0.4, out = 0;
 	var sig, env;
 	// doneAction: 2 removes the Synth from the server/memory if it is done!
-	env = EnvGen.kr(Env.new(levels: [0, 1, 0.4, 0], times: [0.01,0.2,0.1], curve: [2,0,-3]), doneAction: Done.freeSelf);
+	env = {EnvGen.kr(Env.new(levels: [0, 1, 0.4, 0], times: [0.1,0.4,0.1], curve: [2,0,-3]), doneAction: Done.freeSelf)};
 	sig = amp * 0.5 * SinOsc.ar(freq1);
 	sig = sig + (amp * 0.5 * SinOsc.ar(freq:freq2));
 	sig = sig * env;
@@ -133,6 +155,22 @@ SynthDef.new(\sinewaves, {
 )
 
 ~sinewaves = Synth(\sinewaves);
+
+(
+{
+	var sig, env, freq1=200, freq2=205, amp = 0.4;
+	// doneAction: 2 removes the Synth from the server/memory if it is done!
+	env = {EnvGen.kr(Env.new(
+		levels: [0, 1, 0.4, 0],
+		times: [0.1,0.4,0.1],
+		curve: [2,0,-3]))};
+	sig = amp * 0.5 * SinOsc.ar(freq1);
+	sig = sig + (amp * 0.5 * SinOsc.ar(freq:freq2));
+	sig = sig * env;
+	sig;
+}.plot(0.6)
+)
+
 
 // 6. Explore Sound
 { SinOsc.ar(MouseX.kr(10, 500))!2 * 0.5 }.play()
