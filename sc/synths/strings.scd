@@ -1,6 +1,6 @@
 // beautiful smooth strings
 (
-SynthDef("strings",{
+SynthDef(\strings,{
 	arg freq=300, amp=0.1, atk=1, dec=0.2, sus=1, rel=0.5, detune=0.01, out=0;
 	var sig, fund, voices, env, envLPF, unison, detunes;
 	// number of voices
@@ -33,11 +33,11 @@ SynthDef("strings",{
 
 /*
 
-Synth("strings")
+Synth(\strings)
 
 (
 Pbindef(\string_pattern,
-	\instrument, "strings",
+	\instrument, \strings,
 	\midinote, Prand(Scale.minor.degrees + 60, inf),
 	\dur, 0.5,
 	\amp, Pexprand(0.05, 0.2, inf),

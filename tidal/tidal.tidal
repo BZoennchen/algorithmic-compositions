@@ -1,7 +1,1 @@
-d1 $ sound (samples "hc*8" (iter 4 $ run 4))
-
-anticipate 1 $ sound (samples "bd(3,8)" (run 3))
-
-xfadeIn 1 16 $ sound "bd(5,8)"
-
-hush
+ d1 $ sound "bd"

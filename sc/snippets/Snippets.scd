@@ -1,26 +1,43 @@
 //generic drum patterns
-DDWSnippets.put("kick", "~k = Pbind(\\instrument,\\bplay,\\buf,d[\"k\"][0],\\dur,##1##,\\amp,1);");
-DDWSnippets.put("hat","~h = Pbind(\\instrument,\\bplay,\\buf,d[\"ch\"][0],\\dur,##0.25##,\\amp,Pexprand(0.05,1));");
-DDWSnippets.put("snare","~sn = Pbind(\\instrument,\\bplay,\\buf,d[\"s\"][0],\\dur,##2##,\\amp,1);");
-DDWSnippets.put("clap","~c = Pbind(\\instrument,\\bplay,\\buf,d[\"c\"][0],\\dur,##0.75##,\\amp,1);");
-DDWSnippets.put("oh","~oh = Pbind(\\instrument,\\bplay,\\buf,d[\"oh\"][1],\\dur,##Pseq([0.5,Pseq([1],inf)],inf)##,\\amp,1);");
-DDWSnippets.put("backforth","~sn = Pbind(\\instrument,\\vplay,\\buf,d[\"s\"][0],\\dur,Pbjorklund2(Pwhite(1,6),16)/4,\\amp,1,\\rate,Prand([-1,1],inf),\\pos,Pkey(\\rate).linlin(-1,1,0.99,0));");
+DDWSnippets.put("kick",
+	"(
+~k = Pbind(
+    \\instrument, \\bplay,
+    \\buf, d[\\k\][0],
+    \\dur, 1,
+    \\amp, 1)####;
+)");
+
+DDWSnippets.put("hat",
+	"(
+~h = Pbind(
+    \\instrument, \\bplay,
+    \\buf, d[\ch][0],
+    \\dur,0.25,
+    \\amp,Pexprand(0.05,1))####;
+)");
+
+
+DDWSnippets.put("snare","~sn = Pbind(\\instrument,\\bplay,\\buf,d[\\s][0],\\dur,##2##,\\amp,1);");
+DDWSnippets.put("clap","~c = Pbind(\\instrument,\\bplay,\\buf,d[\\c][0],\\dur,##0.75##,\\amp,1);");
+DDWSnippets.put("oh","~oh = Pbind(\\instrument,\\bplay,\\buf,d[\\oh][1],\\dur,##Pseq([0.5,Pseq([1],inf)],inf)##,\\amp,1);");
+DDWSnippets.put("backforth","~sn = Pbind(\\instrument,\\vplay,\\buf,d[\\s][0],\\dur,Pbjorklund2(Pwhite(1,6),16)/4,\\amp,1,\\rate,Prand([-1,1],inf),\\pos,Pkey(\\rate).linlin(-1,1,0.99,0));");
 //rave drums
 DDWSnippets.put("ravedrums","(
-~kbk = Pbind(\\instrument,\\bplay,\\buf,Prand(d[\"breaks175\"],inf),\\dur,16,\\amp,1);
-~kbk2 = Pbind(\\instrument,\\bplay,\\buf,Prand(d[\"breaks175\"],inf),\\dur,16,\\amp,1);
+~kbk = Pbind(\\instrument,\\bplay,\\buf,Prand(d[\\breaks175],inf),\\dur,16,\\amp,1);
+~kbk2 = Pbind(\\instrument,\\bplay,\\buf,Prand(d[\\breaks175],inf),\\dur,16,\\amp,1);
 )");
 //rave piano
 DDWSnippets.put("ravepiano","(
-~piano1 = Pbind(\\instrument,\\bplay,\\buf,d[\"piano\"][1],\\dur,16,\\amp,1);
-~piano2 = Pbind(\\instrument,\\bplay,\\buf,d[\"piano\"][1],\\dur,32,\\amp,1,\\rate,0.5);
+~piano1 = Pbind(\\instrument,\\bplay,\\buf,d[\\piano][1],\\dur,16,\\amp,1);
+~piano2 = Pbind(\\instrument,\\bplay,\\buf,d[\\piano][1],\\dur,32,\\amp,1,\\rate,0.5);
 )");
 //quarter note Piano Chop
-DDWSnippets.put("pianochop","~pianoChop = Pbind(\\instrument,\\vplay,\\buf,d[\"piano\"][1],\\dur,0.25,\\atk,0,\\sus,0.04,\\rel,0,\\pos,Pexprand(0.2,0.5),\\amp,1,\\rate,2)");
+DDWSnippets.put("pianochop","~pianoChop = Pbind(\\instrument,\\vplay,\\buf,d[\\piano][1],\\dur,0.25,\\atk,0,\\sus,0.04,\\rel,0,\\pos,Pexprand(0.2,0.5),\\amp,1,\\rate,2)");
 //Rave piano stabs
-DDWSnippets.put("pianostab","~ravestab2 = Pbind(\\instrument,\\bplay,\\buf,d[\"stab\"][2],\\dur,Pbjorklund2(3,8)/4,\\rate,Pseq([50,52,55,57].midicps/120,inf).stutter(6),\\amp,1)");
+DDWSnippets.put("pianostab","~ravestab2 = Pbind(\\instrument,\\bplay,\\buf,d[\\stab][2],\\dur,Pbjorklund2(3,8)/4,\\rate,Pseq([50,52,55,57].midicps/120,inf).stutter(6),\\amp,1)");
 //strings
-DDWSnippets.put("strings","~strings = Pbind(\\instrument,\\bplay,\\buf,d[\"strings\"][0],\\dur,10,\\rate,3,\\amp,2)");
+DDWSnippets.put("strings","~strings = Pbind(\\instrument,\\bplay,\\buf,d[\\strings][0],\\dur,10,\\rate,3,\\amp,2)");
 
 
 //hi pass
@@ -63,9 +80,9 @@ DDWSnippets.put("rlpfd","~rlpfd = {arg speed = 0.5; RLPFD.ar(Mix(LFSaw.ar([120, 
 //Streson instrument - a drone using LFSaws. 'speed' argument controls speed of sweep and min/max. res controls strength of the effect.
 DDWSnippets.put("stresondrone","{ Streson.ar(LFSaw.ar([220, 180], 0, mul:EnvGen.kr(Env.asr(0.5, 1, 0.02), 1.0) * 0.2), LinExp.kr(LFCub.kr(0.1, 0.5*pi), -1, 1, 280, 377).reciprocal, 0.9, 0.3) }");
 //rave stabs
-DDWSnippets.put("ravestabs","~ravestab = Pbind(\\instrument,\\bplay,\\buf,d[\"stab\"][1],\\dur,Pbjorklund2(3,8)/4,\\rate,Pseq([1,1,1,1,1,1,0.9,1.1]##*1##,inf).stutter(3),\\amp,1)");
+DDWSnippets.put("ravestabs","~ravestab = Pbind(\\instrument,\\bplay,\\buf,d[\\stab][1],\\dur,Pbjorklund2(3,8)/4,\\rate,Pseq([1,1,1,1,1,1,0.9,1.1]##*1##,inf).stutter(3),\\amp,1)");
 //warp1 - scrolls a buffer
-DDWSnippets.put("warp1","~warp1 = {arg speed = 0.01, winsize = 0.2, rate = 1; Warp1.ar(2,##d[\"rhodes\"][0]##,LFTri.kr(speed),rate,winsize,-1,16,0.02,4,0.5)}");
+DDWSnippets.put("warp1","~warp1 = {arg speed = 0.01, winsize = 0.2, rate = 1; Warp1.ar(2,##d[\\rhodes][0]##,LFTri.kr(speed),rate,winsize,-1,16,0.02,4,0.5)}");
 
 //effects
 //Low Pass Filter
@@ -160,16 +177,16 @@ DDWSnippets.put("bend","
 )");
 
 //offbeat cymbal
-DDWSnippets.put("cym","~cym = Pbind(\\instrument,\\bplay,\\buf,d[\"cym\"][0],\\dur,Pseq([0.5,Pseq([1],inf)],inf),\\rel,##0.5##,\\amp,0.5)");
+DDWSnippets.put("cym","~cym = Pbind(\\instrument,\\bplay,\\buf,d[\\cym][0],\\dur,Pseq([0.5,Pseq([1],inf)],inf),\\rel,##0.5##,\\amp,0.5)");
 
 //toms
-DDWSnippets.put("tom","~tom = Pbind(\\instrument,\\bplay,\\buf,d[\"t\"][0],\\dur,Pbjorklund2(3,16)/4,\\amp,1,\\rate,1)");
+DDWSnippets.put("tom","~tom = Pbind(\\instrument,\\bplay,\\buf,d[\\t][0],\\dur,Pbjorklund2(3,16)/4,\\amp,1,\\rate,1)");
 
 //synth verb
 DDWSnippets.put("synthverb","~synth = {Pan2.ar(FreeVerb.ar(SoundIn.ar(0),0.33,##0.7##,0.5))}");
 
 //looped sound
-DDWSnippets.put("loop","~loop = Pbind(\\instrument,\\lplay,\\buf,d[\"breaks\"][0],\\dur,##8##,\amp,0.5)");
+DDWSnippets.put("loop","~loop = Pbind(\\instrument,\\lplay,\\buf,d[\\breaks][0],\\dur,##8##,\amp,0.5)");
 
 //enveloped warp1
 DDWSnippets.put("warpenv","(
@@ -297,9 +314,9 @@ d[\\offtom3] = Pseq([0],1);
 ~tom3rate = 1;
 
 //kicks
-~k = Pbind(\\instrument,\\bplaym,\\buf,d[\"k\"][2],\\dur,Pseq([d[\\offk],(l * Pkr(~multk))],inf),\\amp,1);
-~h = Pbind(\\instrument,\\bplay,\\buf,d[\"ch\"][2],\\dur,Pseq([d[\\offh],(l * Pkr(~multh))],inf),\\amp,0.8,\\rate,2,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
-~sn = Pbind(\\instrument,\\bplaym,\\buf,d[\"s\"][5],\\dur,Pseq([d[\\offsn],(l * Pkr(~multsn))],inf),\\amp,0.8,\\rel,1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~k = Pbind(\\instrument,\\bplaym,\\buf,d[\\k][2],\\dur,Pseq([d[\\offk],(l * Pkr(~multk))],inf),\\amp,1);
+~h = Pbind(\\instrument,\\bplay,\\buf,d[\\ch][2],\\dur,Pseq([d[\\offh],(l * Pkr(~multh))],inf),\\amp,0.8,\\rate,2,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~sn = Pbind(\\instrument,\\bplaym,\\buf,d[\\s][5],\\dur,Pseq([d[\\offsn],(l * Pkr(~multsn))],inf),\\amp,0.8,\\rel,1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
 
 
 /*
@@ -321,14 +338,14 @@ d[\\offtom3] = Pseq([0],1);
 */
 
 //stabs
-~stab = Pbind(\\instrument,\\bplay,\\buf,d[\"stabs\"][5],\\dur,Pseq([d[\\offstab],(l * Pkr(~multstab))],inf),\\amp,0.7,\\rate,Pkr(~stab1rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
-~stab2 = Pbind(\\instrument,\\bplay,\\buf,d[\"stabs\"][5],\\dur,Pseq([d[\\offstab2],(l * Pkr(~multstab2))],inf),\\amp,0.7,\\rate,Pkr(~stab2rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
-~stab3 = Pbind(\\instrument,\\bplay,\\buf,d[\"stabs\"][5],\\dur,Pseq([d[\\offstab3],(l * Pkr(~multstab3))],inf),\\amp,0.7,\\rate,Pkr(~stab3rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~stab = Pbind(\\instrument,\\bplay,\\buf,d[\\stabs][5],\\dur,Pseq([d[\\offstab],(l * Pkr(~multstab))],inf),\\amp,0.7,\\rate,Pkr(~stab1rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~stab2 = Pbind(\\instrument,\\bplay,\\buf,d[\\stabs][5],\\dur,Pseq([d[\\offstab2],(l * Pkr(~multstab2))],inf),\\amp,0.7,\\rate,Pkr(~stab2rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~stab3 = Pbind(\\instrument,\\bplay,\\buf,d[\\stabs][5],\\dur,Pseq([d[\\offstab3],(l * Pkr(~multstab3))],inf),\\amp,0.7,\\rate,Pkr(~stab3rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
 
 //toms
-~tom = Pbind(\\instrument,\\bplaym,\\buf,d[\"t\"][2],\\dur,Pseq([d[\\offtom],(l * Pkr(~multtom))],inf),\\amp,0.7,\\rate,Pkr(~tom1rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
-~tom2 = Pbind(\\instrument,\\bplaym,\\buf,d[\"t\"][2],\\dur,Pseq([d[\\offtom2],(l * Pkr(~multtom2))],inf),\\amp,0.7,\\rate,Pkr(~tom2rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
-~tom3 = Pbind(\\instrument,\\bplaym,\\buf,d[\"t\"][2],\\dur,Pseq([d[\\offtom3],(l * Pkr(~multtom3))],inf),\\amp,0.7,\\rate,Pkr(~tom3rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~tom = Pbind(\\instrument,\\bplaym,\\buf,d[\\t][2],\\dur,Pseq([d[\\offtom],(l * Pkr(~multtom))],inf),\\amp,0.7,\\rate,Pkr(~tom1rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~tom2 = Pbind(\\instrument,\\bplaym,\\buf,d[\\t][2],\\dur,Pseq([d[\\offtom2],(l * Pkr(~multtom2))],inf),\\amp,0.7,\\rate,Pkr(~tom2rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
+~tom3 = Pbind(\\instrument,\\bplaym,\\buf,d[\\t][2],\\dur,Pseq([d[\\offtom3],(l * Pkr(~multtom3))],inf),\\amp,0.7,\\rate,Pkr(~tom3rate),\\rel,0.1,\\pan,Pwhite(-0.8,0.8).stutter(Pwhite(40,100).asStream));
 )
 ");
 
