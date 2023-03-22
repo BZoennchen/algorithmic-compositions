@@ -1,16 +1,17 @@
 MIDIRecorder {
-	var name, instrument, history, synths, <events, clock, noteOn, mono, paused, pauseTime, midiDefOn, midiDefOff;
+	var name, instrument, history, synths, <events, clock, noteOn, mono, paused, pauseTime, midiDefOn, midiDefOff, <>amp;
 
 	*new {
-		arg name, instrument = \default, mono = false;
-		^super.new.init(name, instrument, mono);
+		arg name, instrument = \default, mono = false, amp = 0.5;
+		^super.new.init(name, instrument, mono, amp);
 	}
 
 	init {
-		arg argname, arginstrument, argmono;
+		arg argname, arginstrument, argmono, argamp;
 		name = argname ? name;
 		instrument = arginstrument ? instrument;
 		mono = argmono ? mono;
+		amp = argamp ? amp;
 		history = Array.fill(127, {[]});
 		synths = Array.newClear(127);
 		clock = TempoClock();
@@ -29,14 +30,14 @@ MIDIRecorder {
 			if((synths[num] == nil).and(not(mono && noteOn)),{
 				noteOn = true;
 				if(not(paused), {
-					event = (\instrument: instrument, \start: clock.beats, \midinote: num, \delta: 0);
+					event = (\instrument: instrument, \start: clock.beats, \midinote: num, \dur: 0, \amp: amp);
 					history[num] = history[num].add(event);
 					if(not(events.isEmpty),{
 						var last = events[events.size-1];
-						last[\delta] = event[\start] - last[\start];
+						last[\dur] = event[\start] - last[\start];
 
 					});
-					synths[num] = Synth(instrument, [\freq, num.midicps]);
+					synths[num] = Synth(instrument, [\freq, num.midicps, \amp: amp]);
 					events = events.add(event);
 				});
 			});
@@ -49,7 +50,7 @@ MIDIRecorder {
 				noteOn = false;
 				if(not(paused), {
 					var event = history[num][history[num].size-1];
-					event[\dur] = clock.beats - event[\start];
+					event[\sustain] = clock.beats - event[\start];
 				});
 
 				synths[num].set(\gate, 0);
@@ -91,12 +92,14 @@ MIDIRecorder {
 	}
 
 	play {
+		var copy;
 		this.pause();
+		copy = events.collect{|event| event.copy;};
 		Routine({
-			events.do({|event|
+			copy.do {|event|
 				event.play;
-				event[\delta].wait;
-			});
+				event[\dur].wait;
+			};
 		}).play(clock);
 	}
 
