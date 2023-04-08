@@ -17,7 +17,7 @@ SynthDef(\sine_sum, {
 			curve: \curve.kr(-4)), gate: \gate.kr(1)
         );
 
-        var vibrato = LFNoise1.ar(\detuneFreq.kr(5)!harmonics.size).bipolar(\detune.kr(0.1)).midiratio;
+        var vibrato = LFNoise1.ar(\detuneFreq.kr(5)!2).bipolar(\detune.kr(0.1)).midiratio;
         var harmonicFreq = \freq.kr(220) * vibrato * k;
         amps[index] * SinOsc.ar(harmonicFreq, phases[index]) / k * env.pow(1+((k-1)/3));
     }).sum;
@@ -28,6 +28,7 @@ SynthDef(\sine_sum, {
     Out.ar(0, sig);
 }).add;
 )
+
 
 // init osc
 (
