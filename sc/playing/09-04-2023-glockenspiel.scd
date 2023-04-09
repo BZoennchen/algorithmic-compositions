@@ -74,9 +74,8 @@ n.do { |j|
 			durs.wrapAt(mel).wrapAt(i).wait;
 			i = i + 1;
 
-			if((rand(1.0) > 0.5).and(i % degrees.wrapAt(mel).size == 0), {
+			if(rand(1.0) > 0.85, {
 				bars[j] = bars[j] + 1;
-				i = 0;
 			});
 		};
 	}.fork(tempo, quant: 0.25);
@@ -100,6 +99,11 @@ fork {
 	}
 };
 )
+
+
+
+
+
 
 
 
