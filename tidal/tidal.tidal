@@ -1,1 +1,80 @@
- d1 $ sound "bd"
+setcps(0.5)
+--- Khoparzi
+
+d1 $ n "[0 0 [1 1]] [0 0 [1 1]]" # s "808" # speed 0.5 # room 0.3
+
+
+
+
+
+
+
+
+
+
+d1 $ n "[0 1] 0 [1 2]*2" 
+    # s "808" 
+    # gain "0.9 0.78 0.88"
+    # coarse (range 1 100 (slow 10 sine))
+    # delay 0.9 
+    # delayt 0.25
+    # delayfb 0.1
+
+d2 $ (chop 120 $ s "gtr:2")
+    # gain (range 0.4 0.6 (slow 1 sine))
+    # speed 0.5
+    # squiz "2 4"
+    # att "0.1"
+   
+d3 $ every 3 (0.25 <~) $ s "sax*10"
+    # att "0.001"
+    # hold "0.1"
+    # rel "0.001"
+    # speed "1 2 5 5 7 1 0.5!2 0.25!2"
+    # room "0.3"
+    # size "0.6"
+
+
+d1 $ stack [
+    $ s "<db*308 db*246>" # gain 1.4,
+    s "<db*738 db*1230>" # gain 1.2 # hpf 440,
+    s "<db*246 db*616>" # gain 1.2 # lpf 3000 # nudge 0.1/8
+] 
+    # end 0.3
+    # lpf (segment (8/0.5) $ fast (8/0.75) $ range 200 400 $ sine)
+
+d1 $ jux (0.25 ~>) $ n (slow 2 $ segment 32 $ range 0 32 $ sine) # sound "amencutup"
+
+d1 $ silence
+
+d2 $ sometimes (# crush 2) $ n "0 1 [~ 2] 3" # sound "arpy"
+
+d3 $ sound "hh(8,13)" # speed (slow 2 $ range 0.5 2 tri) # gain 1.5
+
+setcps(105/120)
+
+d1 
+    $ sometimes (+ up 12)
+    $ (# gain (range 0.8 0.95 rand))
+    $ n "c3" # s "supersaw"
+    + up "<0 3 -4 -2>/4" # legato 0.5
+
+d1 $ n "1 1 2 <[4 4],[5 5],6>" # s "[hh,bd]"
+
+d2 $ euclid 5 8 $ s "<db:1 db:2>" # gain 1.2
+
+d3 
+    $ fast 2
+    $ every 4 (rev)
+    $ (every 2 $ jux (0.25 ~>))
+    $ n "[2 4] 4 5 [8 7]" 
+    |+| s "<supergong>(3,8)" + n "c4" 
+    # (lpf $ slow 8 $ range 200 700 sine)
+    # lpq 0.3
+    # sustain 0.3
+    # gain 1.2
+    # voice 0
+
+drawLine "h(3,8)"
+
+d1 $ s "hh(5,13)" # gain 1.3
