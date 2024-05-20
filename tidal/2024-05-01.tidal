@@ -1,0 +1,54 @@
+
+setcps (190/60/4)
+
+scaleList
+
+am1 = note "[~~e ~~ f ~~] [c6 ~~ f ~~ e ~]"
+am2 = note "[~~e ~~ f ~~] [c6 ~~ a ~~ [e|d] ~]"
+am3 = note "<a4(5, 16) f4(5, 16) d4(5, 16) [f4(3, 8) g4(3, 8, 1)]>"
+
+d3 
+  $ slow 2
+  $ stack [ cat [am1, am2, am1, am1], am3]
+  # sound "sine_sum"
+  # gain 1.3
+  # room "0.4 0.1 1.0"
+  # delay 0.25
+  # delaytime 0.75
+  # delayfeedback 0.66
+
+numb = shape 0.98 # amp 0.5 # lpf 1800 # hpf 1500
+
+do
+  let c1 = "0 2 3 ~ 1 2 4 ~"
+  let c2 = "0 1 1 2 4 [1|7] [~|5|5|5] 6"
+  d1 
+    $ degradeBy 0.3
+    $ loopAt 2
+    $ spread ($) [id, striate 2, rev]
+    $ splice 8 c2
+    $ s "breaks125:0" # cut 1
+    -- # numb
+
+hush
+
+panic
+
+d1 
+  $ spread ($) [id, off 0.25 (# speed 0.5), off 0.25 ((# speed 2.5) . fast 2) ]
+  $ sound "ho ho:2 ho:3 hc" 
+  # cut 1
+
+setcps (190/60/4)
+
+-- ??? slow
+
+d1 $ splice 8 ("1 2 3 4 5 6 7" ) $ sound ("breaks125:0")
+
+
+d1 $ "hh*6 <hh*2,cp*2>" # gain 2.0
+
+
+
+
+hush

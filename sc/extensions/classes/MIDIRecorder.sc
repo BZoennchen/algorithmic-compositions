@@ -1,17 +1,18 @@
 MIDIRecorder {
-	var name, instrument, history, synths, <events, clock, noteOn, mono, paused, pauseTime, midiDefOn, midiDefOff, <>amp;
+	var name, instrument, history, synths, <events, clock, noteOn, mono, paused, pauseTime, midiDefOn, midiDefOff, <>amp, log;
 
 	*new {
-		arg name, instrument = \default, mono = false, amp = 0.5;
-		^super.new.init(name, instrument, mono, amp);
+		arg name, instrument = \default, mono = false, amp = 0.5, log=false;
+		^super.new.init(name, instrument, mono, amp, log);
 	}
 
 	init {
-		arg argname, arginstrument, argmono, argamp;
+		arg argname, arginstrument, argmono, argamp, arglog;
 		name = argname ? name;
 		instrument = arginstrument ? instrument;
 		mono = argmono ? mono;
 		amp = argamp ? amp;
+		log = arglog;
 		history = Array.fill(127, {[]});
 		synths = Array.newClear(127);
 		clock = TempoClock();
@@ -27,6 +28,7 @@ MIDIRecorder {
 		midiDefOn = MIDIdef.noteOn('on_'++name, {
 			arg val, num, chan, src;
 			var event;
+			if(log, {("noteOn: " ++ val).postln;});
 			if((synths[num] == nil).and(not(mono && noteOn)),{
 				noteOn = true;
 				if(not(paused), {
@@ -46,6 +48,7 @@ MIDIRecorder {
 		//TODO: buggy if paused and one plays
 		midiDefOff = MIDIdef.noteOff('off_'++name, {
 			arg val, num, chan, src, event;
+			if(log, {("noteOff: " ++ val).postln;});
 			if(synths[num] != nil, {  // to be absolute save
 				noteOn = false;
 				if(not(paused), {

@@ -51,7 +51,9 @@ Utils {
 	}
 
 	*loadSetup {
+		"run Setup.scd".postln;
 		("../../Setup.scd").resolveRelative.load;
+		"Setup.scd finished".postln;
 	}
 
 	*initProxy {

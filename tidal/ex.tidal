@@ -1,0 +1,87 @@
+jux (iter 4) $ (every 3 (density 1.5) $ 
+    sound (pick <$> "bd bd*2 [sn cp] bd" <*> (slow 8 $ 
+        scan 8)))
+    # speed (slow 4 $ (+1) <$> sine)
+
+let fpluck brightness = s "superfm" # mod12 (1.9 * (brightness*1.5))
+
+setcps(120/60/4)
+
+d1 $ every 2 (0.25 ~>) $ s "{hh*4, <[sn|sn sn] kick>}" # gain (range 0.5 1.0 $ slow 8 sine)
+
+d2 
+    $ jux (# pF "ratio1" 6)
+    $ every 2 (# pF "modIndex2" "4 3 1 6") . (# speed 2)
+    $ n "[7 0 3 0]*4" + n "<0 5 -2 3>*2" 
+    # s "cfm" 
+    # gain 2.5 
+    # pF "rel" 0.98 
+    # pF "modIndex1" (slow 2 "1 3 4 5 6 9")
+    # room (range 0 0.5 $ slow 4 sine)
+
+hush
+
+d1 $ s "drum cp" >| n "1 2 2 2" <| n "1 1 2"
+
+d1 $ s "drum:1 drum:2 cp:2"
+
+
+
+d1 $ s "drum cp" >| n "1 2 2 2" >| n "1 1 2"
+
+d1 $ s "drum:1 drum:1 cp:2"
+
+
+hush
+
+d1 $ s "drum arpy" >| n "1 2 2 2" |> n "1 1 3"
+
+|1 | 1 | 2|
+|1|2|2 | 2|
+|1 1 1 1 2|
+
+d1 $ s "drum arpy" >| n "1 2 2" |>| n "1 1"
+
+d1 $ s "drum:1 [drum:1 arpy:1] arpy:1"
+
+d1 $ s "drum arpy" >| speed "1 2 2 2" + speed "1 1 2"
+
+d1 $ s "drum arpy" >| n "1 2 2 2" |<| n "1 1 2"
+
+d1 $ cat [sound "bd*2 sn", sound "arpy jvbass*2", sound "drum*2"]
+
+d1 $ s "bd*128" # lpf (segment 16 $ range 200 400 $ sine)
+
+d1 $ chop "16 4" $ s "xmas!2" # speed 0.5 # cut 1
+
+hush
+
+once $ s "breaks125" # speed 0.5
+
+hush
+
+d1 $ segment 2 $ s "breaks125:0" # cut 1
+
+d1 $ s "cpu*50" # (speed $ slow 6 $ range 0 4 $ sine)
+
+d1 $ n (slow 2 $ segment 12 $ range 0 32 $ sine) # sound "amencutup"
+
+hush
+
+spread
+
+d2 $ silence
+
+d1 $ s "[drum:1 [drum:1 drum:1]] [arpy:1 [arpy:2 arpy:2]] ~"
+
+d1 $ s ("[drum:1 drum:1] drum:1 [arpy:1 arpy:2] arpy:2")
+
+
+d1 $ s "drum:1 [[drum:1 drum:1] arpy:1] [arpy:1 arpy:2]"
+
+d1 $ s "drum:1 [drum:2 drum:2 _] [arpy:2 _ arpy:2] arpy:2"
+
+|1 |1 |2 |
+|1|2|2|2|
+
+print a

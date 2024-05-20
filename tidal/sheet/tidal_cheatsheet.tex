@@ -1,0 +1,408 @@
+\documentclass[8pt]{extarticle} % extarticle: font sizes < 10
+
+\usepackage[
+pdftitle={Tidal Cycles Reference Card},
+pdfauthor={Benedikt Z{\"o}nnchen},
+pdfkeywords={Tidal, Tidal Cyles},
+pdfsubject={Quick Reference Card for Tidal v1.1}
+]{hyperref}
+
+\usepackage{refcards}
+\usepackage{textcomp}
+\usepackage{vmargin}
+\usepackage[table]{xcolor}
+\usepackage{titlesec}
+
+% A4
+\setpapersize[landscape]{A4}
+\setmarginsrb%
+{1.5cm}  % left
+{1.0cm}  % top
+{1.5cm}  % right
+{1.0cm}  % bottom
+{0ex}    % header height
+{0ex}    % header separation
+{0ex}    % footer height
+{0ex}    % footser separation
+\setlength\columnsep{7mm}
+
+% Letter
+%\setpapersize[landscape]{USletter}
+%\setmarginsrb%
+%{1.1cm}  % left
+%{1.1cm}  % top
+%{0.9cm}  % right
+%{0.9cm}  % bottom
+%{0ex}    % header height
+%{0ex}    % header separation
+%{0ex}    % footer height
+%{0ex}    % footser separation
+%\setlength\columnsep{4mm}
+
+\definecolor{colorsection}{HTML}{891652}
+\definecolor{sectioncolor}{HTML}{891652}
+\definecolor{subsectioncolor}{HTML}{000000}
+
+\definecolor{darkred}{HTML}{891652}
+
+\definecolor{tiltecolor}{HTML}{891652}
+\definecolor{colortitle}{HTML}{891652}
+\definecolor{table1}{HTML}{EEF7FF}
+\definecolor{table2}{HTML}{CDE8E5}
+\definecolor{table3}{HTML}{7AB2B2}
+\definecolor{table4}{HTML}{4D869C}
+
+\hypersetup{
+	colorlinks=true,   % Activate colors for links
+	linkcolor=blue,    % Color of internal links
+	citecolor=blue,   % Color of citations
+	filecolor=blue, % Color of file links
+	urlcolor=blue,     % Color of URL hyperlinks
+}
+
+\newcommand{\rest}{$\sim$}
+\newcommand{\rep}{"}
+
+\begin{document}
+	\raggedright
+	
+	\begin{multicols}{2}
+		
+		\title{\color{tiltecolor}Tidal Cycles Reference Card}
+
+		{\small
+			(c) 2024 Benedikt Z{\"onnchen} (\href{www.bzoennchen.de}{www.bzoennchen.de})
+			This work is licensed under the \href{https://creativecommons.org/licenses/by-nc-sa/4.0/}{Creative Commons Attribution-NonCommercial-ShareAlike 4.0 Internationl} (\textbf{CC BY-NC-SA 4.0})
+		}
+		
+		\vspace*{7pt}
+		
+		\section{Mini Notation}
+		
+		{\small
+		\begin{tabular}{L{0.1\linewidth} L{0.2\linewidth} L{0.27\linewidth} L{0.43\linewidth}}
+			\small\bf Symbol & \small\bf Description & \small\bf Example & \small\bf Equivalent  \\ 
+			\tt \rest   & Rest  & \tt d1 \$ s "\rest hh" & -	\\
+			\tt [ ]   & Grouping & \tt d1 \$ s "[bd sd] hh" & \tt d1 \$ fastcat [s "bd sd", s "hh"] \\
+			\tt [$a, b$]  & Grouping & \tt d1 \$ s "[bd sd, hh hh]" & \tt d1 \$ cat [s "bd sd", s "hh hh"] \\
+			\tt . & Shorthand grouping & \tt d1 \$ s "bd sd\,.\,hh hh hh" & \tt d1 \$ s "[bd sd] [hh hh hh] \\
+			\tt , & Polyrhythm  & \tt d1 \$ s "[bd sd, hh hh hh]" & \tt d1 \$ stack [s "bd sd", s "hh hh hh"] \\
+			\tt * & Repeat (as group) & \tt d1 \$ s "bd*2 sd" & \tt d1 \$ s "[bd bd] sd" \\
+			\tt ! & Replicate & \tt d1 \$ s "bd!3 sd" & \tt d1 \$ s "bd bd bd sd" \\
+			\tt / & Slow down & \tt d1 \$ s "bd/2" & \tt d1 \$ s (slow 2 \$ "bd") \\
+			\tt | & Random choice & \tt d1 \$ s "[bd|cp|hh]" & - \\
+			\tt < > & Alternate & \tt d1 \$ s "bd <sd hh cp>" & \tt d1 \$ slow 3 \$ s "bd sd bd hh bd cp" \\
+			\tt \_ & Elongate & \tt d1 \$ s "bd \_ \_ \rest sd \_" & Result: \tt (0>1/2)\textbackslash |s:\,"bd" (4/6>1)\textbackslash |s:\,"sd" \\
+			\tt @ & Elongate & \tt d1 \$ s "superpiano@3 & \tt d1 \$ s "superpiano \_ \_" \\
+			\tt ? & Random removal & \tt d1 \$ s "bd?\ sd" & \tt d1 \$ fastcat [degradeBy 0.5 \$ s "bd", s "sd"] \\
+			\tt : & Sample selection & \tt d1 \$ s "bd:3" & \tt d1 \$ s "bd" \# n 3 \\
+			\tt ( ) & Euclidean sequence & \tt d1 \$ s "bd(3,8)" & \tt d1 \$ euclid 3 8 \$ s "bd" \\
+			\tt \{ \} & Warp around & \tt d1 \$ s "\{bd bd bd, cp hh\}"& \tt d1 \$ stack [s "bd*3", s "cp hh cp"] \\
+			\tt { }\% & Warp around & \tt d1 \$ s "\{bd cp hh\}\%8""& \tt d1 \$ s "bd cp hh bd cp hh bd cp"
+	\end{tabular}
+	}
+		
+		\section{Pattern Structure}
+		{\small
+		\begin{tabular}{L{0.2\linewidth} L{0.1\linewidth} C{0.15\linewidth} C{0.15\linewidth}}
+			\small\bf Function & \small\bf Both & \small\bf Structure from Left & \small\bf Structure from Right \\ 
+			Addition  & {\tt |+|} or {\tt +}  &\tt |+ & \tt +| \\
+			Subtraction  & {\tt |-|} or {\tt -}  &\tt |- & \tt -| \\
+			Multiplication  & {\tt |*|} or {\tt *}  &\tt |* & \tt *| \\
+			Division  & {\tt |/|} or {\tt /}  &\tt |/ & \tt /| \\
+			Modulo  & {\tt |\%|} or {\tt \%}  &\tt |\% & \tt \%| \\
+			Left values  & {\tt |<|} or {\tt <}  &\tt |< & \tt <| \\
+			Right values  & {\tt |>|} or {\tt >}  & {\tt |>} or {\tt \#} & \tt >|
+		\end{tabular}
+	 	}
+  	
+  		\vspace{5pt}
+  
+ 		\subsection{Examples}
+ 		Combining (both) structures is similar to slicing a cycle at intersection of both patterns, e.\,g. $3 = 3 \cdot 1/3$ and $4 = 4 \cdot 1/4$ results in $1/4, 1/12, 2/12, 2/12, 1/12, 1/4$\\ \vspace{5pt}
+		{\small
+		\begin{tabular}{L{0.3\linewidth} L{0.3\linewidth} L{0.45\linewidth} }
+			\small\bf Code & \small\bf Description & \small\bf Equivalent \\ 
+			\tt n "{\bf 1 2 2 2}" |> n "{\color{blue}1 1 3}" & Structure left, values right & {\tt n "1 1 1 3"} \\
+			\tt n "{\bf 1 2 2 2 2 2}" \# n "{\color{blue}1 5 3}" & Structure left, values right & \tt n "1 1 5 5 3 3" \\
+			\tt n "{\bf\color{blue}1 2 2 2}" |< n "1 1 3" & Structure left, values left & {\tt n "1 2 2 2"}  \\
+			\tt n "{\color{blue}1 2 2} 2" <| n "{\bf1 1 2}" & Structure right, values left & \tt n "1 2 2" \\
+			\tt n "1 2 2 2" >| n "{\bf\color{blue}1 1 2}" & Structure right, values right & \tt n "1 1 2"\\
+			\tt n "{\bf 1 2 2 2}" |>| n "{\bf\color{blue}1 1 2}" & Structure both, values right & \tt n "1 [1 1 \_] [1 \_ 2] 2" \\
+			\tt n "{\bf\color{blue} 1 2 2 2}" |<| n "{\bf1 1 2}" & Structure both, values right & \tt n "1 [2 2 \_] [2 \_ 2] 2"
+			%\tt n "2 3" + n "4 5 6"
+		\end{tabular}
+		}
+
+		
+		\section{Oscillators}
+		
+		Oscillators are continuous patterns, which means they don't have any structure, and must be used with a pattern that does. They usually spit out values between 0 and 1. \\ \vspace{5pt}
+	 	{\small
+		\begin{tabular}{L{0.2\linewidth} L{0.5\linewidth} L{0.3\linewidth} }
+			\small\bf OSC & \small\bf Example & \small\bf Description \\ 
+			\rowcolor{table1}
+			\tt sine & \tt d1 \$ s "bd*8" \# pan {\bf sine} & Sine wave \\
+			\rowcolor{table1}
+			\tt cosine & \tt d1 \$ s "bd*8" \# pan {\bf cosine} \# speed (sine + 0.5) & Cosine wave \\
+			\rowcolor{table1}
+			\tt square & \tt d1 \$ s "bd*8" \# pan (cat [{\bf square}, sine]) & Square wave \\
+			\rowcolor{table1}
+			\tt tri & \tt d1 \$ s "bd*16" \# speed (slow 2 \$ range 0.5 2 {\bf tri}) & Triangle wave \\
+			\rowcolor{table1}
+			\tt saw & \tt d1 \$ s "bd*8" \# pan (slow 2 {\bf saw}) & Sawtooth wave \\
+			\rowcolor{table1}
+			\tt isaw & \tt d1 \$ s "bd*8" \# pan (slow 2 {\bf isaw}) & Inverted Sawtooth wave \\
+			\rowcolor{table1}
+			\tt smooth $p$ & \tt d1 \$ s "bd*4" \# pan (slow 4 \$ {\bf smooth} "0 0.5 1") & Linear Interpolation \\
+			\rowcolor{table2}
+			\tt rand & \tt d1 \$ s "bd*8" \# pan {\bf rand} & random numbers in $[0;1]$\\
+			\rowcolor{table2}
+			\tt irand $n$ & \tt d1 \$ s "drum*8" \# n ({\bf irand 8}) & random integers in $[0;n]$ 
+		\end{tabular}
+		}
+					
+		\section{Sampling} % bite 5 "1 0 [1 4]" $ s "breaks125" # cut 1
+		{\small
+		\begin{tabular}{L{0.2\linewidth} L{0.5\linewidth} L{0.3\linewidth} }
+				\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+				%\small\bf Audio & & \\ 
+				\rowcolor{table1}
+				\tt chop $n_p$ $p$ & \tt {chop} "16 4" \$ s "xmas xmas" & Cut into $n_p$ parts \\
+				\rowcolor{table1}
+				\tt striate $n_p$ $p$ & \tt {striate} 16 \$ n "1 2 3" \# s "cpu" & \& interleave \\
+				\rowcolor{table1}
+				\tt striateBy $n_p$ $d_p$ $p$ & \tt {striateBy} 16 "<0.1 0.01>" \$ s "cpu:1 cpu:2" & \& $d_p$ controls grain length \\
+				\rowcolor{table1}
+				\tt slice $n_p$ $m_p$ $p$ & \tt {slice} 8 "0 2 4" \$ s "breaks125" & Cut \& arrange via $m_p$ \\
+				\rowcolor{table1}
+				\tt splice $n_p$ $m_p$ $p$ & \tt {splice} 8 "0 2 4" \$ s "breaks125"& \& auto pitch \\
+				\rowcolor{table1}
+				\tt randslice $n_p$ $p$ & \tt {randslice} 8  \$ s "breaks125" & Cut \& arrange randomly \\
+				\rowcolor{table1}
+				\tt bite $n$ $m_p$ $p$ & \tt {bite} 5 "1 [1 4]" \$ s "breaks125" \# cut 1 & Cut {\bf cycle} \& mini notation $m_p$  \\
+				\rowcolor{table1}
+				\tt chew $n$ $m_p$ $p$ &\tt chew 5 "1 [1 4]" \$ s "breaks125" \# cut 1 &\& auto pitch  \\
+				\rowcolor{table1}
+				\tt loopAt $t_p$ $p$ & \tt {loopAt} "<1 0.5>" \$ s "breaks125"& auto pitch to fit cycle number \\
+				\rowcolor{table1}
+				\tt smash $n$ [$t_p$] $p$ & \tt {smash} 3 [2,3,4] \$ s "ho ho:2 ho:3 hc" & {\tt spread} \& {\tt striate } \\
+				\rowcolor{table1}
+				\tt smash' $n$ [$t_p$] $p$ & \tt {smash'} 3 [2,3,4] \$ s "ho ho:2 ho:3 hc" & {\tt spread} \& {\tt chop } \\ %\hline
+				%\small\bf Signal & & \\
+				\rowcolor{table2}
+				\tt segment $t_p$ $s$ & \tt lpf ({segment} 16 \$ range 200 400 \$ sine) &  discretize {\bf signal} ($t_p$ per cycle)
+			\end{tabular}
+		}
+		
+		\section{Alteration}
+		{\small
+			\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+				\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+				%\small\bf Scaling & & \\
+				\rowcolor{table1}
+				\tt range $n_p$ $m_p$ $s$ & \tt lpf ({range} 200 5000 \$ sine) & Scaling in $[n;m]$ \\
+				\rowcolor{table1}
+				\tt xrange $n_p$ $m_p$ $s$ & \tt lpf ({xrange} 200 5000 \$ sine) & Exp. scaling in $[n;m]$ \\
+				\rowcolor{table1}
+				\tt quantise $r$ [$q$] & \tt {quantise} 5 [0, 1.3 ,2.6,3.2,4.7,5] & Quantise all $q$ to multiple of $1/r$ \\ %\hline
+				%\small\bf Degrade & & \\ 
+				\rowcolor{table2}
+				\tt degradeBy $q$ $p$  & \tt {degradeBy} 0.9 \$ s "bd*5" & Removes with a prob. $q$ \\
+				\rowcolor{table2}
+				\tt degrade  $p$  & \tt {degrade} \$ s "bd*5" & Removes with a prob. $0.5$ \\
+				\rowcolor{table2}
+				\tt unDegradeBy $q$ $p$  & \tt {unDegradeBy} 0.1 \$ s "bd*5" & Removes with a prob. $(1-q)$ \\ %\hline
+				%\small\bf Repetitions & & \\ 
+				\rowcolor{table1}
+				\tt ply $n_p$ $p$  & \tt {ply} 3 \$ s "bd \rest\ sn cp" & Repeat $n_p$ times within a cycle\\
+				\rowcolor{table1}
+				\tt stutter $n$ $d$ $p$ & \tt {stutter} 4 (1/16) \$ s "bd cp" & Repeat $n$ times \& seperate by $d$ cycles \\
+				\rowcolor{table1}
+				\tt echo $n$ $d$ $r$ $p$ & \tt {echo} 4 0.2 0.5 \$ s "bd sn" & \& make each $r$ times quieter/loude \\
+				\rowcolor{table1}
+				\tt slowstripe $n$ $p$ & \tt {slowstripe} 3 \$ s "bd sd [mt ht]" & \& avg. pattern length is one cycle \\
+				\rowcolor{table1}
+				\tt palindrome $p$ & \tt {palindrome} \$ n "1 2 3" \# s "cpu" & Reverse every other cycle \\ %\hline
+				%&\small\bf Truncation & & \\ 
+				\rowcolor{table2}
+				\tt trunc $t_p$ $p$ & \tt {trunc} "<0.75 0.25>" \$ s "bd sn*5" & Truncates a patttern (rests at the end) \\
+				\rowcolor{table2}
+				\tt linger $t_p$  $p$ & \tt {linger} 0.25 \$ n "0 2 1" \# s "arpy" & \& but fill cycle by repeating \\
+				\rowcolor{table2}
+				\tt chunk $n$ $f$ $p$ & \tt {chunk} 4 (\# speed 2) \$ s "bd hh sn cp" & Chunk $p$, apply $f$ to one chunk \\
+				\rowcolor{table2}
+				\tt chunk' $n$ $f$ $p$ & - & \& reverse cycling \\
+				\rowcolor{table2}
+				\tt loopFirst $p$ & - & Loop only the first cycle of the $p$ \\ %\hline
+				%\small\bf Shuffling & & \\ 
+				\rowcolor{table1}
+				\tt bite $n$ $m_p$ $p$ & \tt {bite} 5 "1 [1 4]" \$ s "breaks125" \# cut 1 & Cut {\bf cycle} \& mini notation $m_p$  \\
+				\rowcolor{table1}
+				\tt shuffle $n$ $p$ & - & Random permutation $n$ parts of $p$ \\
+				\rowcolor{table1}
+				\tt scramble $n$ $p$ & - & random selection of $n$ parts of $p$  \\
+				\rowcolor{table1}
+				\tt rot $n_p$ $o_p$ & - & rotates $n_p$ times
+			\end{tabular}
+		}
+		
+	\section{Time}
+	{\small
+	\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+		\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+		%\small\bf Scaling & & \\
+		\rowcolor{table1}
+		\tt fast $t_p$ $p$  & \tt ({fast} "2 4" "bd sn hh hh")  & Speed up $p$ \\
+		\rowcolor{table1}
+		\tt fastGap $t_p$ $p$  & \tt ({fastGap} "2 4" "bd sn hh hh")  & \& but insert rest \\
+		\rowcolor{table1}
+		\tt hurry $t_p$ $p$  & \tt ({fast} "2 4" "bd sn hh hh")  & \& Speed up control \\
+		\rowcolor{table1}
+		\tt fastSqueeze $t_p$ $p$  & \tt {fastSqueeze} "2 4" \$ s "bd*8"  & speed up $p$ \& Squeeze into one cycle \\
+		\rowcolor{table1}
+		\tt slow $t_p$ $p$  & \tt ({slow} "2 4" "bd sn hh hh")  & Slow down $p$ \\
+		\rowcolor{table1}
+		\tt slowSqueeze $t_p$ $p$  & \tt {slowSqueeze} "2 4" \$ s "bd*8"  & slow down $p$ \& Squeeze into one cycle \\
+		\rowcolor{table2}
+		\tt compress $(t_1, t_2)$ $p$  & \tt {compress} (1/4, 3/4) \$ s "[bd sn]!"  & Squeeze (by speeding up) $p$ into $[t_1;t_2]$ \\
+		\rowcolor{table2}
+		\tt zoom $(t_1, t_2)$ $p$  & \tt {zoom} (1/4, 3/4) \$ s "[bd sn]!"  & Squeeze (by cutting) $p$ into $[t_1;t_2]$ \\
+		\rowcolor{table2}
+		\tt within $(t_1, t_2)$ $f$ $p$  & \tt {within} (1/4, 3/4) (fast 2) \$ s "bd*8"  & Apply $f$ within $[t_1;t_2]$ of $p$ \\
+		\rowcolor{table2}
+		\tt stretch $p$  & \tt {stretch} "~ 0 1 5 8*4 ~"  & trim rests from $p$ \\
+		\rowcolor{table1}
+		\tt off $t_p$ $f$ $p$  & \tt {off} 0.125 (\# speed 2) \$ "bd*4 sn"  & apply $f$ to $p$ \& layer it on top \\
+		\rowcolor{table1}
+		\tt pressBy $t_p$ $p$  & \tt {pressBy} 0.3 \$ "bd sn hh"  & Add a rest of length $t_p$ before each part \\
+		\rowcolor{table1}
+		\tt press $p$  & \tt {press} \$ "bd sn hh"  & \tt press $0.5$ \\
+		\rowcolor{table1}
+		\tt rotL $t$ $p$ & \tt {rotL} 3 \$ s "bd sn hh"  & Shift pattern back in time \\
+		\rowcolor{table1}
+		\tt ($d$ <\rest) $p$ & \tt (0.125 <\rest) \$ s "bd sn hh"  & \tt  rotL $d$ $p$ \\
+		\rowcolor{table1}
+		\tt rotR $t$ $p$ & \tt {rotR} 3 \$ s "bd sn hh"  & Shift pattern forward in time \\
+		\rowcolor{table1}
+		\tt ($d$ \rest>) $p$ & \tt (0.125 \rest>) \$ s "bd sn hh"  & \tt  rotR $d$ $p$ \\
+		\rowcolor{table1}
+		\tt spin $d$ & \tt {spin} 3 \$ "bd sn hh"  & Copy \& successive offset by $(1/d)$ \& pan \\
+		\rowcolor{table1}
+		\tt weave $c$ $p_{c_1}$ [$p_{c_2}$] & \tt {weave} 3 (pan sine) \$ [s "bd sn", s "hh"]  & Apply $p_{c_1}$ to $p_{c_2}$ with successive offset \\
+		\rowcolor{table1}
+		\tt weaveWith $c$ $p_c$ [$f$] & \tt {weaveWith} 3 (s "bd hh") [fast 2, chop 16]  & Apply $f$'s to $p_c$ with successive offset \\
+		\rowcolor{table2}
+		\tt rev $p$ & \tt rev "1 [\rest{} 2] \rest{} 3"  & Reverse $p$ \\
+		\rowcolor{table1}
+		\tt swingBy $d$ $n$ $p$ & \tt swingBy (1/3) 4 \$ "hh*8"  & Cut into $n$ slices \& swing them \\
+		\rowcolor{table1}
+		\tt swing $n$ $p$ & \tt swing 4 \$ "hh*8"  & \tt swingBy 0.5 $n$ $p$ \\
+		\rowcolor{table1}
+		\tt ghost $p$ & \tt ghost \$ s "~ sn" & \tt Add ghost note (drum) \\
+		\rowcolor{table1}
+		\tt ghost' $d$ $p$ & \tt ghost' \$ s "~ sn" & \tt \& define delay $d$ \\
+	\end{tabular}
+		}
+
+		{\small
+		\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+			\rowcolor{table1}
+			\tt ghostWith $d$ $f$ $p$ & \tt ghost' \$ s "~ sn" & \tt \& modify ghosts with $f$ \\
+			\rowcolor{table2}
+			\tt inside $t_p$ $f$ $p$ & \tt inside 2 (rev) "0 1 2 3" & \tt Apply $f$ inside a cycle split in $t_p$ \\
+			\rowcolor{table2}
+			\tt outside $t_p$ $f$ $p$ & \tt outside 2 (rev) \$ cat [s "0 1", s "2 3"]" & \tt Apply $f$ over $t_p$ cycles  \\
+			\rowcolor{table1}
+			\tt echo $n_p$ $r_p$ $d_p$ $p_c$ & \tt echo 4 0.2 0.5 \$ s "bd sn" & \tt Echo with depth $n_p$, delaytime $r_p$, feedback $d_p$ \\
+			\rowcolor{table1}
+			\tt echoWith $n_p$ $r_p$ $f$ $p_c$ & \tt echoWith 4 0.2 (|* speed 1.5)  \$ s "bd sn" & \tt Like {\tt echo} but instead of vol decrease apply $f$ \\
+		\end{tabular}
+	}
+
+	\section{Panning}
+	{\small
+	\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+		\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+		%\small\bf Scaling & & \\
+		\tt jux $f$ $p$  & \tt jux (rev) \$ s "bd sn hh hh" & Apply $f$ to $p$ but in right channel \\
+		\tt juxBy  $d$ $f$ $p$  & \tt juxBy 0.3 (rev) \$ s "bd sn hh hh" & Like {\tt jux} but $d$ controls panning
+	\end{tabular}
+	}
+	
+	\section{Concatenation}
+	{\small
+	\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+		\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+		%\small\bf Scaling & & \\
+		\rowcolor{table1}
+		\tt cat [$p$] & \tt cat [s "bd*2 sn", s "arpy jvbass*2"] & Concat and keep duration \\
+		\rowcolor{table1}
+		\tt fastcat [$p$] & \tt fastcat [s "bd*2 sn", s "arpy jvbass*2"] & Concat but squeeze into one cycle \\
+		\rowcolor{table1}
+		\tt timeCat [$(t, p)$] & \tt timeCat [(1, s "bd*2 sn"), (0.5, s "arpy jvbass*2")] & \& but squeeze proportional \\
+		\rowcolor{table1}
+		\tt randcat [$p$] & \tt randcat ["bd*2 sn", "arpy jvbass*2"] & Like {\tt cat} but order randomly \\
+		\rowcolor{table1}
+		\tt wrandcat [$(p, q)$] & \tt wrandcat [("bd*2 sn",0.9), ("arpy jvbass*2",0.1)] & Like {\tt randcat} but weighted by $q$ \\
+		\rowcolor{table1}
+		\tt overlay $p_1$ $p_2$ & \tt  overlay "bd*2 sn" "arpy*2" & {\tt "[bd sn:2, cp*3]" } \\
+		\rowcolor{table1}
+		\tt $p_1$ <> $p_2$ & \tt  "bd*2 sn" <> "arpy*2" & {\tt "[bd sn:2, cp*3]" } \\
+		\rowcolor{table1}
+		\tt append $p_1$ $p_2$ & \tt append (s "bd*2 sn") (s "arpy jvbass*2") & Like {\tt cat} \\
+		\rowcolor{table1}
+		\tt fastAppend $p_1$ $p_2$ & \tt fastAppend (s "bd*2 sn") (s "arpy jvbass*2") & Like {\tt fastcat} \\
+		\rowcolor{table1}
+		\tt wedge $d$ $p_1$ $p_2$ & \tt wedge 0.3 (s "bd*2 sn") (s "arpy jvbass*2") & Like {\tt fastAppend} but $d$ controls the fill-ratio \\
+		\rowcolor{table2}
+		\tt brak $p$ & \tt brak \$ s "[feel feel:3, hc:3 hc:2 hc:4 ho:1]" & Pattern into breakbeat \\
+		\rowcolor{table1}
+		\tt listToPat $[a]$ & \tt listToPat [0, 1, 2, 3] & Transforms a list into a pattern \\
+		\rowcolor{table1}
+		\tt fromList $[a]$ & \tt fromList [0, 1, 2, 3] & \& each item represents one cycle \\
+		\rowcolor{table1}
+		\tt fromMaybes $[a]$ & - & -\\
+		\rowcolor{table1}
+		\tt flatpat $[a]$ & - & -\\
+		\rowcolor{table2}
+		\tt run $n_p$ & \tt n (run 8) & generates a pattern of one cycle $0$ to $n_p-1$\\
+		\rowcolor{table2}
+		\tt scan $n_p$ & \tt n (scan 8) & generates a pattern of $n_p$ cycles $1$ to $n_p$
+	\end{tabular}
+	}
+
+	\section{Accumulation}
+	{\small
+	\begin{tabular}{L{0.2\linewidth} L{0.42\linewidth} L{0.38\linewidth} }
+		\small\bf Function & \small\bf Notation & \small\bf Description \\ 
+		%\small\bf Scaling & & \\
+		\rowcolor{table1}
+		\tt stack [$p$] & \tt stack [s "bd*2 sn", s "arpy*2"] \# speed 2 & Polyrhythm \\
+		\rowcolor{table1}
+		\tt superimpose $f$ $p$ & \tt superimpose (fast 2) \$ s "bd sn" & Add modified version \\
+		\rowcolor{table1}
+		\tt layer [$f$] $p$ & \tt layer [fast 2, rev] \$ s "bd sn" & Add multiple modified versions \\
+		\rowcolor{table2}
+		\tt steps [$str_1, str_2$] & - & - \\
+		\rowcolor{table1}
+		\tt iter $n_p$ $p$ & \tt iter 4 \$ s "bd hh sn cp" & divide pattern into $n_p$ parts and shift over $n_p$ cycles \\
+		\rowcolor{table1}
+		\tt iter' $n_p$ $p$ & \tt iter' 4 \$ s "bd hh sn cp" & Like {\tt iter} but other direction 
+	\end{tabular}
+}
+
+		\section{Conditions}
+		\section{Harmony \& Melody}
+		\section{Performance}
+		\section{Transitions}
+		\section{Samplers}
+		\section{Randomness}
+		
+		\section{Composition}
+		\section{mi-UGens}
+		\section{Control Busses}
+			
+		
+	\end{multicols}
+\end{document}
