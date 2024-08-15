@@ -3,19 +3,23 @@ setcps (190/60/4)
 
 scaleList
 
-am1 = note "[~~e ~~ f ~~] [c6 ~~ f ~~ e ~]"
-am2 = note "[~~e ~~ f ~~] [c6 ~~ a ~~ [e|d] ~]"
-am3 = note "<a4(5, 16) f4(5, 16) d4(5, 16) [f4(3, 8) g4(3, 8, 1)]>"
+do 
+  let am1 = note "[~~e ~~ f ~~] [c6 ~~ f ~~ e ~]"
+  let am2 = note "[~~e ~~ f ~~] [c6 ~~ a ~~ [e|d] ~]"
+  let am3 = note "<a4(5, 16) f4(5, 16) d4(5, 16) [f4(3, 8) g4(3, 8, 1)]>"
+  d3 
+    $ slow 2
+    $ stack [ cat [am1, am2, am1, am1], am3]
+    # sound "fm1"
+    # gain 1.3
+    # room "0.4 0.1 1.0"
+    # delay 0.25
+    # delaytime 0.75
+    # delayfeedback 0.66
 
-d3 
-  $ slow 2
-  $ stack [ cat [am1, am2, am1, am1], am3]
-  # sound "sine_sum"
-  # gain 1.3
-  # room "0.4 0.1 1.0"
-  # delay 0.25
-  # delaytime 0.75
-  # delayfeedback 0.66
+hush
+
+d1 $ s "[hh, clap]"
 
 numb = shape 0.98 # amp 0.5 # lpf 1800 # hpf 1500
 

@@ -1,0 +1,55 @@
+d1 $ freq "75 78 80*4" 
+  # s "drone1" 
+  # sustain 1
+  # amp 1.0
+  # pF "atk" 1
+
+d2 $ slow 8 $ freq (segment 8 $ range 80 150 perlin)
+  # s "drone1"
+  # sustain 5
+  # gain 2.2
+  -- # gain (segment 16 $ range 1.8 2.2 sine)
+
+d3 $ note "12" # s "fm1" # amp 2.0
+  + up "{7 3 ~ 7 12}%1"
+  # legato 2
+  # lpf 500
+  # hpf 1000
+
+d4 $ note "12" # s "fm1" # amp 1.3
+  + up "{7 3 ~ 7 12}%15"
+
+hush
+
+d4 $ fast 3 $ off 0.125 (# speed "<2 3>") $ n (scale "minor" "{0 5 7 12}%8")
+  # s "fm1"
+  # pF "amp" 0.8
+  # legato 1.3
+  # room 0.3
+  # lpf (segment 8 $ fast 8 $ range 200 1000 sine)
+
+setcps(0.7)
+
+d1 $ stack [
+  n "0 1" # s "drum",
+  s "~ hh ~ hh" # amp 1.3
+]
+
+hush
+
+d2 $ note "3" # s "fm1" # amp 1.0 # legato 2 # pF "ratio1" 1.2
+  + up "{0 3 7 8 10 12}"
+
+d3 $ note "3" # s "fm1" # amp 1.0 # legato 2
+  + up "{0 3 7 8 10 12}%4"
+
+
+
+
+
+
+
+
+
+
+

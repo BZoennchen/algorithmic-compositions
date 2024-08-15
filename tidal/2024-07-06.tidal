@@ -1,0 +1,49 @@
+do
+  d1 
+    $ sometimes (# pF "ratio2" 1.2)
+    $ sometimes (# pF "modIndex1" 2)
+    $ fast 2 
+    $ off 0.25 (+ n "12")
+    $ n (arpg "<ds'maj'o c4'min'ii gs3'maj'ii>")
+    + n "12*4 12 24" 
+    # s "fm1" 
+    # room 1.0 
+    # gain (slow 16 $ ((range 0.3 0.5 perlin) + 0.3))
+    # pan (slow 16 $ (perlin))
+  d2 $ n "<<ds'maj'o c4'min'ii> <g4'min as3'maj'ii> gs3'maj'ii _>" 
+    # s "fm1" 
+    # speed "2 4 2 6"
+    -- # lpf (range 1000 3000 tri)
+
+d3 $ euclid "<3 5 3 [7, 13]>" "<8 8 8 16>" $ s "bd" 
+  # shape 0.3
+  # lpf 500
+  # speed 5
+  # gain 0.7
+
+  hush
+
+d4 $ stack [
+  euclid 2 5 $ s "cpu:1", 
+  euclid 3 5 $ s "cpu:0*2" # speed "0.3 0.1" # room 0.4
+  ] # gain "0.7 0.8 0.9 1.0" - gain "0.2"
+
+euclid
+
+hush
+
+once $ n "0 1 2" # s "drone1" # gain 1.5 # sustain 10 # gain 1.2
+
+once $ n "-20" # s "drone1" # gain 2.0 # sustain 20 # room 1.0
+
+import Sound.Tidal.Chords
+
+hush
+
+chordL "major"
+
+d3 $ sometimes (+ n "12") $ n "<{0,4,7} {2,4,7}>" # s "fm1" # speed "2 4 6"
+
+d3 $ n "c'major" # s "fm1" # speed 2
+
+d1 $ n (scale "techno" "0 1 2 3 4 5 6 7") # sound "superpiano"

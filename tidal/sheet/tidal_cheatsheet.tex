@@ -84,7 +84,7 @@ pdfsubject={Quick Reference Card for Tidal v1.1}
 			\small\bf Symbol & \small\bf Description & \small\bf Example & \small\bf Equivalent  \\ 
 			\tt \rest   & Rest  & \tt d1 \$ s "\rest hh" & -	\\
 			\tt [ ]   & Grouping & \tt d1 \$ s "[bd sd] hh" & \tt d1 \$ fastcat [s "bd sd", s "hh"] \\
-			\tt [$a, b$]  & Grouping & \tt d1 \$ s "[bd sd, hh hh]" & \tt d1 \$ cat [s "bd sd", s "hh hh"] \\
+			\tt cat & Concat & \tt - & \tt d1 \$ cat [s "bd sd", s "hh hh"] \\
 			\tt . & Shorthand grouping & \tt d1 \$ s "bd sd\,.\,hh hh hh" & \tt d1 \$ s "[bd sd] [hh hh hh] \\
 			\tt , & Polyrhythm  & \tt d1 \$ s "[bd sd, hh hh hh]" & \tt d1 \$ stack [s "bd sd", s "hh hh hh"] \\
 			\tt * & Repeat (as group) & \tt d1 \$ s "bd*2 sd" & \tt d1 \$ s "[bd bd] sd" \\

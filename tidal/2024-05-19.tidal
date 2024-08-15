@@ -4,19 +4,20 @@ hush
 
 d1 $ s "dbs*10" # end 0.1
 
-d1 $ stack [
-    s "<dbs*308 dbs*246>" # amp 0.2,
-    s "<dbs*738 dbs*1230>" # amp 0.2 # hpf 400,
-    s "<dbs*1846 dbs*616>" # amp 0.9 # hpf 400 # nudge 0.5/8
-] 
-  # end 0.3
-  # lpf (segment (8/0.5) $ fast (8/0.75) $ range 200 400 $ sine)
-  # lpf (segment (8/0.5) $ fast (3.5) $ range 800 100 $ sine)
-  # end (segment (8/1.5) $ fast (8) $ range 0.02 0.3 $ sine)
-  # lpq 0.3 # gain 0.65 # krush 12
+hush
 
-
-d2 $ fast 2 $ n "0 1*2 2 1*2" # s "dbs" # amp 1
+do 
+  d1 $ stack [
+      s "<dbs*308 dbs*246>" # amp 0.2,
+      s "<dbs*738 dbs*1230>" # amp 0.2 # hpf 400,
+      s "<dbs*1846 dbs*616>" # amp 0.9 # hpf 400 # nudge 0.5/8
+    ] 
+    # end 0.3
+    # lpf (segment (8/0.5) $ fast (8/0.75) $ range 200 400 $ sine)
+    # lpf (segment (8/0.5) $ fast (3.5) $ range 800 100 $ sine)
+    # end (segment (8/1.5) $ fast (8) $ range 0.02 0.3 $ sine)
+    # lpq 0.3 # gain 1.05 # krush 3
+  d2 $ fast 2 $ n "0 1*2 2 1*2" # s "dbs" # amp 1
 
 d2 $ fast 8 $ n "1*2" # s "dbs" # amp 1
 

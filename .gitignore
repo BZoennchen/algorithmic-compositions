@@ -3,6 +3,12 @@
 .AppleDouble
 .LSOverride
 
+# ignored folders
+sc/samples/
+sonic-pi/samples/
+musescore/
+pd/
+
 # Icon must end with two \r
 Icon
 
@@ -24,3 +30,9 @@ Icon
 Network Trash Folder
 Temporary Items
 .apdisk
+
+# tex
+*.aux
+*.log
+*.out
+*.synctex.gz
